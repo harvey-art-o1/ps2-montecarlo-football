@@ -27,7 +27,7 @@ El flujo del script se divide en 4 fases principales controladas por la variable
 
 * **Entrada de Datos Estricta:** El teclado virtual no cuenta con control avanzado de excepciones para cadenas mal formateadas; si se introducen caracteres inválidos, el parser asignará valores mínimos por defecto (`100` simulaciones o `0.0f` xG).
 * **Límite de la Matriz:** La matriz visual de marcadores está hardcodeada para mostrar combinaciones del rango 0 al 4. Los goles simulados que superen esta cifra se procesan correctamente para las estadísticas globales (Win/Draw/Loss y xPts), pero no se reflejarán visualmente en el panel derecho de distribución.
-* **Carga de CPU:** Al ejecutarse sobre hardware real de PS2 a través del entorno de athenaEnv, valores de simulación excesivamente altos (por ejemplo, mayores a 5,000 o 10,000 de golpe) pueden congelar momentáneamente la pantalla o ralentizar el refresco a pesar de la barra de progreso. Se recomienda mantener el muestreo en rangos moderados.
+* **Carga de CPU:** Al ejecutarse sobre hardware real de PS2 a través del entorno de athenaEnv, valores de simulación excesivamente altos (por ejemplo, mayores a 10,000 o 20,000 de golpe) pueden congelar momentáneamente la pantalla o ralentizar el refresco a pesar de la barra de progreso. Se recomienda mantener el muestreo en rangos moderados.
 
 ## Controles
 
