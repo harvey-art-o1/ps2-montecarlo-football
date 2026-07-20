@@ -3,12 +3,12 @@ Screen.setParam(Screen.DEPTH_TEST_ENABLE, false);
 Screen.setVSync(true);
 Screen.setFrameCounter(true);
 
-// [ZONA: CONFIG/VARIABLES]
+// Variables y config
 let numSimulations = 100;
 let homeTeam = "Local";
 let awayTeam = "Rival";
-let homeXG = 0.0f;
-let awayXG = 0.0f;
+let homeXG = 0.0;
+let awayXG = 0.0;
 
 let inputBuffer = ""; 
 let countHomeWins = 0;
@@ -24,7 +24,7 @@ function rand() {
 function poisson(lambda) {
     let L = Math.exp(-lambda);
     let k = 0;
-    let p = 1.0f;
+    let p = 1.0;
     do { k++; p *= rand(); } while (p > L);
     return k - 1;
 }
@@ -42,7 +42,7 @@ const navCooldown = 150;
 let cursor = 0;
 const keys = [["1","2","3"],["4","5","6"],["7","8","9"],[".","0","<"],["OK"]];
 
-// [ZONA: TECLADO]
+// Teclado virtual
 function drawKeyboard(sw, sh) {
     let keyW = sw * 0.08;
     let keyH = sh * 0.07;
@@ -71,7 +71,7 @@ function drawKeyboard(sw, sh) {
 
 const pad = Pads.get(0);
 
-// [ZONA: BUCLE PRINCIPAL]
+// Bucle principal
 Screen.display(() => {
     pad.update();
     Screen.clear();
@@ -94,8 +94,8 @@ Screen.display(() => {
         if (key !== undefined) {
             if (key === "OK") {
                 if (stage === -1) { numSimulations = parseInt(inputBuffer) || 100; inputBuffer = ""; stage = 0; }
-                else if (stage === 0) { homeXG = parseFloat(inputBuffer) || 0.0f; inputBuffer = ""; stage = 1; }
-                else if (stage === 1) { awayXG = parseFloat(inputBuffer) || 0.0f; inputBuffer = ""; stage = 2; }
+                else if (stage === 0) { homeXG = parseFloat(inputBuffer) || 0.0; inputBuffer = ""; stage = 1; }
+                else if (stage === 1) { awayXG = parseFloat(inputBuffer) || 0.0; inputBuffer = ""; stage = 2; }
             } else if (key === "<") { inputBuffer = inputBuffer.slice(0, -1); }
             else { inputBuffer += key; }
         }
@@ -104,7 +104,7 @@ Screen.display(() => {
 
     Draw.rect(0, 0, sw, sh, Color.new(18, 18, 24, 255));
 
-    // [ZONA: MENU INICIAL]
+    // Menu: Simulaciones
     if (stage === -1) {
         font.print(sw * 0.15, sh * 0.10, "MONTE CARLO MATCH SIMULATOR");
         font.print(sw * 0.15, sh * 0.22, "Configurar numero de simulaciones:");
@@ -113,7 +113,7 @@ Screen.display(() => {
         drawKeyboard(sw, sh);
     }
 
-    // [ZONA: XG LOCAL]
+    // Menu: xG Local
     else if (stage === 0) {
         font.print(sw * 0.15, sh * 0.10, "CONFIGURACION: EQUIPO LOCAL");
         font.print(sw * 0.15, sh * 0.22, "Introduce los goles esperados (xG):");
@@ -122,7 +122,7 @@ Screen.display(() => {
         drawKeyboard(sw, sh);
     }
 
-    // [ZONA: XG RIVAL]
+    // Menu: xG Rival
     else if (stage === 1) {
         font.print(sw * 0.15, sh * 0.10, "CONFIGURACION: EQUIPO RIVAL");
         font.print(sw * 0.15, sh * 0.22, "Introduce los goles esperados (xG):");
@@ -131,16 +131,21 @@ Screen.display(() => {
         drawKeyboard(sw, sh);
     }
 
-    // [ZONA: CALCULO SIMULACION]
+    // Calculos
     else if (stage === 2 && running) {
-        scoreMat = []; countHomeWins = 0; countAwayWins = 0; countDraws = 0;
+        scoreMat = Array.from({ length: 5 }, () => new Array(5).fill(0));
+        countHomeWins = 0; countAwayWins = 0; countDraws = 0;
+
         for (let i=0; i<numSimulations; i++) {
             let homeGoals = poisson(homeXG);
             let awayGoals = poisson(awayXG);
             if (homeGoals > awayGoals) countHomeWins++;
             else if (homeGoals < awayGoals) countAwayWins++;
             else countDraws++;
-            scoreMat.push([homeGoals, awayGoals]);
+            
+            if (homeGoals < 5 && awayGoals < 5) {
+                scoreMat[homeGoals][awayGoals]++;
+            }
 
             if (i % 20 === 0) {
                 let barMaxW = sw * 0.80;
@@ -153,7 +158,7 @@ Screen.display(() => {
         running = false;
     }
 
-    // [ZONA: PANTALLA RESULTADOS]
+    // Interfaz de resultados
     if (stage === 2 && !running) {
         let homeWinProb = round2(countHomeWins/numSimulations*100);
         let awayWinProb = round2(countAwayWins/numSimulations*100);
@@ -171,8 +176,8 @@ Screen.display(() => {
         font.print(col1 + 12, sh * 0.22, awayTeam + " (Win %): " + awayWinProb, Color.new(240, 70, 70, 255));
         font.print(col1 + 12, sh * 0.28, "Empate (Draw %): " + drawProb, Color.new(70, 140, 240, 255));
 
-        let homeXPts = round2((homeWinProb/100)*3.0f + (drawProb/100)*1.0f);
-        let awayXPts = round2((awayWinProb/100)*3.0f + (drawProb/100)*1.0f);
+        let homeXPts = round2((homeWinProb/100)*3.0 + (drawProb/100)*1.0);
+        let awayXPts = round2((awayWinProb/100)*3.0 + (drawProb/100)*1.0);
         font.print(col1 + 12, sh * 0.38, homeTeam + " xPts: " + homeXPts);
         font.print(col1 + 12, sh * 0.44, awayTeam + " xPts: " + awayXPts);
 
@@ -183,7 +188,7 @@ Screen.display(() => {
         for (let h=0; h<5; h++) {
             let row = "";
             for (let a=0; a<5; a++) {
-                let count = scoreMat.filter(s => s[0]===h && s[1]===a).length;
+                let count = scoreMat[h][a];
                 let prob = round2(count/numSimulations*100);
                 row += prob.toString().padEnd(5, " ");
             }
