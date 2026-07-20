@@ -7,8 +7,8 @@ Screen.setFrameCounter(true);
 let numSimulations = 100;
 let homeTeam = "Local";
 let awayTeam = "Rival";
-let homeXG = 0.0;
-let awayXG = 0.0;
+let homeXG = 0.0f;
+let awayXG = 0.0f;
 
 let inputBuffer = ""; 
 let countHomeWins = 0;
@@ -24,7 +24,7 @@ function rand() {
 function poisson(lambda) {
     let L = Math.exp(-lambda);
     let k = 0;
-    let p = 1.0;
+    let p = 1.0f;
     do { k++; p *= rand(); } while (p > L);
     return k - 1;
 }
@@ -94,8 +94,8 @@ Screen.display(() => {
         if (key !== undefined) {
             if (key === "OK") {
                 if (stage === -1) { numSimulations = parseInt(inputBuffer) || 100; inputBuffer = ""; stage = 0; }
-                else if (stage === 0) { homeXG = parseFloat(inputBuffer) || 0.0; inputBuffer = ""; stage = 1; }
-                else if (stage === 1) { awayXG = parseFloat(inputBuffer) || 0.0; inputBuffer = ""; stage = 2; }
+                else if (stage === 0) { homeXG = parseFloat(inputBuffer) || 0.0f; inputBuffer = ""; stage = 1; }
+                else if (stage === 1) { awayXG = parseFloat(inputBuffer) || 0.0f; inputBuffer = ""; stage = 2; }
             } else if (key === "<") { inputBuffer = inputBuffer.slice(0, -1); }
             else { inputBuffer += key; }
         }
@@ -176,8 +176,8 @@ Screen.display(() => {
         font.print(col1 + 12, sh * 0.22, awayTeam + " (Win %): " + awayWinProb, Color.new(240, 70, 70, 255));
         font.print(col1 + 12, sh * 0.28, "Empate (Draw %): " + drawProb, Color.new(70, 140, 240, 255));
 
-        let homeXPts = round2((homeWinProb/100)*3.0 + (drawProb/100)*1.0);
-        let awayXPts = round2((awayWinProb/100)*3.0 + (drawProb/100)*1.0);
+        let homeXPts = round2((homeWinProb/100)*3.0f + (drawProb/100)*1.0f);
+        let awayXPts = round2((awayWinProb/100)*3.0f + (drawProb/100)*1.0f);
         font.print(col1 + 12, sh * 0.38, homeTeam + " xPts: " + homeXPts);
         font.print(col1 + 12, sh * 0.44, awayTeam + " xPts: " + awayXPts);
 
