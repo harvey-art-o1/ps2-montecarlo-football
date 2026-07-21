@@ -34,3 +34,8 @@ El flujo del script se divide en 4 fases principales controladas por la variable
 * **D-PAD (Arriba / Abajo / Izquierda / Derecha):** Navegación por las teclas del teclado virtual.
 * **Botón CRUZ (X):** Seleccionar carácter del teclado / Confirmar "OK".
 * **Botón CÍRCULO:** Reiniciar la aplicación desde la pantalla de resultados.
+  
+## Ejecucion 
+
+Para ejecutar el proyecto tendras que disponer de un emulador de ps2 como lo es (PCSX2). luego solo tendras que arrastrar el archivo "athenaEnv.elf" a la ventana del emulador, pero procurando tener habilitada la opcion "HostFS". para mas informacion acerca del tema les recomiendo buscar en internet o ir al repositorio oficial de athenaEnv. 
+  
