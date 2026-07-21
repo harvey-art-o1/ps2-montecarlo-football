@@ -2,6 +2,8 @@
 
 Simulador de partidos de fútbol basado en el método de Monte Carlo y la distribución de Poisson, desarrollado en JavaScript para la consola PlayStation 2 utilizando el framework **athenaEnv**. El programa permite configurar el número de iteraciones y las métricas de goles esperados (xG) de ambos equipos mediante un teclado en pantalla adaptado para el mando de PS2.
 
+![Error al cargar](img/demostracion.png)
+
 ## Características
 
 * **Cálculo Estadístico Real:** Utiliza un algoritmo generador de números pseudoaleatorios corregido (`Math.imul`) y una distribución de Poisson para modelar los goles de cada equipo de forma independiente.
